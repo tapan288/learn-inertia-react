@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head,useForm } from '@inertiajs/react';
+import { Head,useForm,router } from '@inertiajs/react';
 
-export default function Index({ auth,posts }) {
+export default function Index({ auth,posts,now }) {
     const { data, setData, post, processing, errors,reset,clearErrors } = useForm({
         body: '',
       })
@@ -14,6 +14,14 @@ export default function Index({ auth,posts }) {
             }
           })
         }
+
+        function refreshPosts(){
+            console.log('refreshing posts');
+            router.visit(route('posts.index'),{
+                only: ['posts'],
+                preserveScroll : true
+            })
+        }
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -25,7 +33,7 @@ export default function Index({ auth,posts }) {
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-3">
-                    {/* {errors.body} */}
+                    {now}
                 <form onSubmit={submit}
                     className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6"
                 >
@@ -49,6 +57,15 @@ export default function Index({ auth,posts }) {
                         Post
                     </button>
                 </form>
+                <div className="py-3 flex justify-center">
+                    <button
+                    onClick={refreshPosts}
+                        className="text-sm text-indigo-700"
+                        type="button"
+                    >
+                        Refresh posts
+                    </button>
+                </div>
                         {posts.data.map((post) => {
                             return (
                                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
