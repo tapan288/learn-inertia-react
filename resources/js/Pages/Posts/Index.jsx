@@ -2,13 +2,17 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head,useForm } from '@inertiajs/react';
 
 export default function Index({ auth,posts }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors,reset } = useForm({
         body: '',
       })
 
       function submit(e) {
           e.preventDefault()
-          post(route('posts.store'))
+          post(route('posts.store'),{
+            onSuccess: () => {
+                reset('body')
+            }
+          })
         }
     return (
         <AuthenticatedLayout
@@ -32,6 +36,7 @@ export default function Index({ auth,posts }) {
                         id="body"
                         cols="30"
                         rows="5"
+                        value={data.body}
                         className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full"
                     ></textarea>
                     {errors.body && <p className="text-red-500">{errors.body}</p>}
