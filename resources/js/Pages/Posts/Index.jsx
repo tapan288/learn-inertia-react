@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head,useForm } from '@inertiajs/react';
 
 export default function Index({ auth,posts }) {
-    const { data, setData, post, processing, errors,reset } = useForm({
+    const { data, setData, post, processing, errors,reset,clearErrors } = useForm({
         body: '',
       })
 
@@ -31,7 +31,8 @@ export default function Index({ auth,posts }) {
                 >
                     <label htmlFor="body" className="sr-only">Body</label>
                     <textarea
-                    onChange={e => setData('body', e.target.value)}
+                        onChange={e => setData('body', e.target.value)}
+                        onFocus={ () => clearErrors('body')}
                         name="body"
                         id="body"
                         cols="30"
