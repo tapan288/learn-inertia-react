@@ -21,9 +21,10 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        auth()->user()->posts()->create(
-            $request->validated()
-        );
+        sleep(3);
+        // auth()->user()->posts()->create(
+        //     $request->validated()
+        // );
 
         return redirect()->route('posts.index');
     }
