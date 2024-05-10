@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head,useForm,router, Link } from '@inertiajs/react';
 
-export default function Index({ auth,posts,greeting }) {
+export default function Index({ auth,posts }) {
     const { data, setData, post, processing, errors,reset,clearErrors } = useForm({
         body: '',
       })
@@ -32,7 +32,6 @@ export default function Index({ auth,posts,greeting }) {
 
             <div className="py-12">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-3">
-                    {greeting}
                 <form onSubmit={submit}
                     className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6"
                 >
