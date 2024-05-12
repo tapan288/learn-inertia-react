@@ -36,6 +36,7 @@ export default function Index({ auth, posts }) {
         router.visit(route("posts.index"), {
             only: ["posts"],
             preserveScroll: true,
+            preserveState: true,
         });
     }
     return (
