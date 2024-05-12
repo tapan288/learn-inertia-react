@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head,useForm,router, Link } from '@inertiajs/react';
+import { Head,useForm,router } from '@inertiajs/react';
+import toast from 'react-hot-toast';
 
 export default function Index({ auth,posts }) {
     const { data, setData, post, processing, errors,reset,clearErrors } = useForm({
@@ -11,6 +12,9 @@ export default function Index({ auth,posts }) {
           post(route('posts.store'),{
             onSuccess: () => {
                 reset('body')
+                toast.success('Post Created Successfully', {
+                    position: "top-right"
+                  })
             }
           })
         }
