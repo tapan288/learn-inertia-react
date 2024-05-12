@@ -1,7 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router, usePage } from "@inertiajs/react";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
 
 export default function Index({ auth, posts }) {
     const { data, setData, post, processing, errors, reset, clearErrors } =
@@ -11,23 +9,11 @@ export default function Index({ auth, posts }) {
 
     const page = usePage();
 
-    useEffect(() => {
-        if (page?.props?.message) {
-            toast(page.props.message.body, {
-                position: "top-right",
-                type: page.props.message.type,
-            });
-        }
-    }, [page.props.message]);
-
     function submit(e) {
         e.preventDefault();
         post(route("posts.store"), {
             onSuccess: () => {
                 reset("body");
-                // toast.success("Post Created Successfully", {
-                //     position: "top-right",
-                // });
             },
         });
     }
