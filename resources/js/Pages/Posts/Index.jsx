@@ -94,7 +94,10 @@ export default function Index({ auth, posts }) {
                     </div>
                     {posts.data.map((post) => {
                         return (
-                            <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div
+                                key={post.id}
+                                className="bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                            >
                                 <div className="p-6 text-gray-900">
                                     <div className="font-semibold">
                                         {post.user.name}

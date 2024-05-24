@@ -6,7 +6,7 @@ export default function Toastify() {
     const page = usePage();
 
     useEffect(() => {
-        if (page?.props?.message) {
+        if (page?.props?.message?.body) {
             toast(page.props.message.body, {
                 position: "top-right",
                 type: page.props.message.type,

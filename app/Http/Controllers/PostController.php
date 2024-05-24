@@ -26,6 +26,6 @@ class PostController extends Controller
         );
 
         return redirect()->route('posts.index')
-            ->with('error', 'An error occurred');
+            ->with('success', 'Post created successfully.');
     }
 }
