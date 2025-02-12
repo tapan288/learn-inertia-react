@@ -16,13 +16,17 @@ class PostController extends Controller
 
         return Inertia::render('Posts/Index', [
             'posts' => PostResource::collection($posts),
+            'postsCount' => function () use ($posts) {
+                sleep(2);
+                return $posts->count();
+            },
         ]);
     }
 
     public function store(StorePostRequest $request)
     {
         auth()->user()->posts()->create(
-            $request->validated()
+            $request->validated(),
         );
 
         return redirect()->route('posts.index')

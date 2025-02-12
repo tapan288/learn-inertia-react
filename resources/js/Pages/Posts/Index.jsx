@@ -1,7 +1,32 @@
+import DangerButton from "@/Components/DangerButton";
+import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, router, usePage } from "@inertiajs/react";
+import { Head, useForm, router, usePage, usePoll } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
-export default function Index({ auth, posts }) {
+export default function Index({ auth, posts, postsCount }) {
+    const [isPolling, setIsPolling] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const { start, stop } = usePoll(
+        5000,
+        {
+            only: ["postsCount"],
+            onStart: () => setIsRefreshing(true),
+            onSuccess: () => {
+                setIsRefreshing(false);
+            },
+        },
+        {
+            autoStart: isPolling,
+            keepAlive: true,
+        }
+    );
+
+    useEffect(() => {
+        isPolling ? start() : stop();
+    }, [isPolling]);
+
     const { data, setData, post, processing, errors, reset, clearErrors } =
         useForm("StorePost", {
             body: "",
@@ -30,7 +55,26 @@ export default function Index({ auth, posts }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Posts
+                    Posts ({postsCount})
+                    {!isPolling && (
+                        <DangerButton
+                            onClick={() => setIsPolling(true)}
+                            className="mx-2"
+                        >
+                            Enable Polling
+                        </DangerButton>
+                    )}
+                    {isPolling && (
+                        <PrimaryButton
+                            onClick={() => setIsPolling(false)}
+                            className="mx-2"
+                        >
+                            Disable Polling
+                        </PrimaryButton>
+                    )}
+                    {isRefreshing && (
+                        <span className="ml-2">Refreshing...</span>
+                    )}
                 </h2>
             }
         >
