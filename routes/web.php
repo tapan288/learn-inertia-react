@@ -15,9 +15,23 @@ Route::get('/', function () {
     ]);
 });
 
-Route::inertia('/dashboard', "Dashboard")
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard', [
+        'notifications' => Inertia::merge(function () {
+            if (!session()->has('notification')) {
+                return null;
+            }
+
+            return [session()->get('notification')];
+        }),
+    ]);
+})
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::post('notification', function () {
+    session()->flash('notification', str()->random(10));
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
