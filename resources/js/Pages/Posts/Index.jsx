@@ -1,10 +1,23 @@
 import DangerButton from "@/Components/DangerButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, router, usePage, usePoll } from "@inertiajs/react";
+import {
+    Head,
+    useForm,
+    router,
+    usePage,
+    usePoll,
+    Deferred,
+} from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function Index({ auth, posts, postsCount }) {
+export default function Index({
+    auth,
+    posts,
+    postsCount,
+    morePosts,
+    evenMorePosts,
+}) {
     const [isPolling, setIsPolling] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -19,7 +32,7 @@ export default function Index({ auth, posts, postsCount }) {
         },
         {
             autoStart: isPolling,
-            keepAlive: true,
+            keepAlive: false,
         }
     );
 
@@ -136,21 +149,34 @@ export default function Index({ auth, posts, postsCount }) {
                             Refresh posts
                         </button>
                     </div>
-                    {posts.data.map((post) => {
-                        return (
-                            <div
-                                key={post.id}
-                                className="bg-white overflow-hidden shadow-sm sm:rounded-lg"
-                            >
-                                <div className="p-6 text-gray-900">
-                                    <div className="font-semibold">
-                                        {post.user.name}
+                    <Deferred data="posts" fallback={<div>Loading...</div>}>
+                        {posts &&
+                            posts.data.map((post) => {
+                                return (
+                                    <div
+                                        key={post.id}
+                                        className="bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                                    >
+                                        <div className="p-6 text-gray-900">
+                                            <div className="font-semibold">
+                                                {post.user.name}
+                                            </div>
+                                            <p className="mt-1">{post.body}</p>
+                                        </div>
                                     </div>
-                                    <p className="mt-1">{post.body}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
+                                );
+                            })}
+                    </Deferred>
+
+                    <Deferred
+                        data={["morePosts", "evenMorePosts"]}
+                        fallback={<div>Loading...</div>}
+                    >
+                        {morePosts && <div>More Posts data loaded</div>}
+                        {evenMorePosts && (
+                            <div>Even More Posts data loaded</div>
+                        )}
+                    </Deferred>
                 </div>
             </div>
         </AuthenticatedLayout>

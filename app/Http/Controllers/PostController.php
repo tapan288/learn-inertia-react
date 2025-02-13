@@ -15,7 +15,18 @@ class PostController extends Controller
         $posts = Post::with('user')->latest()->get();
 
         return Inertia::render('Posts/Index', [
-            'posts' => PostResource::collection($posts),
+            'posts' => Inertia::defer(function () use ($posts) {
+                sleep(1);
+                return PostResource::collection($posts);
+            }, 'first'),
+            'morePosts' => Inertia::defer(function () use ($posts) {
+                sleep(1);
+                return PostResource::collection($posts);
+            }, 'second'),
+            'evenMorePosts' => Inertia::defer(function () use ($posts) {
+                sleep(1);
+                return PostResource::collection($posts);
+            }, 'second'),
             'postsCount' => function () use ($posts) {
                 sleep(2);
                 return $posts->count();
