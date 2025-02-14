@@ -36,6 +36,13 @@ export default function Authenticated({ user, header, children }) {
                                 >
                                     Posts
                                 </NavLink>
+                                <NavLink
+                                    href={route("users")}
+                                    active={route().current("users")}
+                                    prefetch
+                                >
+                                    Users
+                                </NavLink>
                             </div>
                         </div>
 

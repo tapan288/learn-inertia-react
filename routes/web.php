@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,28 @@ Route::get('/dashboard', function (Request $request) {
 })
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::get('/users', function (Request $request) {
+    return Inertia::render('Users', [
+        'users' => function () {
+            sleep(2);
+            return User::get();
+        },
+    ]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('users');
+
+Route::get('/users/load-more', function (Request $request) {
+    return Inertia::render('LoadMoreUsers', [
+        'users' => function () {
+            sleep(2);
+            return User::paginate(5);
+        },
+    ]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('users.load-more');
 
 Route::post('notification', function () {
     session()->flash('notification', str()->random(10));
