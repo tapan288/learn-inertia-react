@@ -1,6 +1,7 @@
 <?php
 
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\PostController;
@@ -15,14 +16,18 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard', [
-        'notifications' => Inertia::merge(function () {
-            if (!session()->has('notification')) {
-                return null;
-            }
+        // 'notifications' => Inertia::merge(function () {
+        //     if (!session()->has('notification')) {
+        //         return null;
+        //     }
 
-            return [session()->get('notification')];
+        //     return [session()->get('notification')];
+        // }),
+        'datetime' => Inertia::optional(function () use ($request) {
+            sleep($request->get('delay', 0));
+            return now()->format('Y-m-d H:i:s');
         }),
     ]);
 })
